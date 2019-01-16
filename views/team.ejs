@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Historic Teamz - <%= team['organization'] %></title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" 
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/team.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let team = <%-JSON.stringify(team)%>;
+            let starters = team['starters'];
+            let bench = team['bench'];
+            
+            function setupView() {
+                $('#pitch').css('backgroundImage', 'url(/images/pitch-half.png');
+                $('#pitch').css('height', '1100px');
+                updatePositionsDisplay();
+            }
+
+            function updatePositionsDisplay() {
+                let html = "<div class='row my-5'><div class='col text-center'>";
+                if (starters['gk']['enabled']) {
+                    html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['gk']['lName'] +"</h4></div>"
+                } else {
+                    html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>GK</h4></div>"
+                }
+
+                // Close out GK row and start DEF row
+                html += "</div><div class='row my-5'><div class='col text-center'>";
+                
+                if (starters['rb']) {
+                    if (starters['rb']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['rb']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>RB</h4>"
+                    }
+                }
+
+                // Close out RB col and start RCB
+                html += "</div><div class='col text-center' style='height: 100px'>";
+                
+                if (starters['rcb']) {
+                    if (starters['rcb']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['rcb']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CB</h4>"
+                    }
+                }
+                
+                // Close out RCB col and start CB
+                html += "</div>";
+                
+                if (starters['cb']) {
+                    html += "<div class='col text-center'>";
+                    if (starters['cb']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['cb']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CB</h4>"
+                    }
+                    html += "</div>"
+                }
+                
+                // Close out CB col and start LCB
+                html += "<div class='col text-center'>";
+                
+                if (starters['lcb']) {
+                    if (starters['lcb']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['lcb']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CB</h4>"
+                    }
+                }
+                
+                // Close out LCB col and start LB
+                html += "</div><div class='col text-center'>";
+                
+                if (starters['lb']) {
+                    if (starters['lb']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['lb']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>LB</h4>"
+                    }
+                }
+
+                // Close out LB and DEF row and start DEF-MID row
+                html += "</div></div><div class='row my-4'><div class='col text-center' style='height: 100px'>";
+
+                if (starters['rwb']) {
+                    if (starters['rwb']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['rwb']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>RWB</h4>"
+                    }
+                }
+
+                // Close out RWB col and start RCDM
+                html += "</div><div class='col text-center'>";
+                
+                if (starters['rcdm']) {
+                    if (starters['rcdm']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['rcdm']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CDM</h4>"
+                    }
+                }
+                
+                // Close out RCDM col and start CDM
+                html += "</div>";
+                
+                if (starters['cdm']) {
+                    html += "<div class='col text-center'>";
+                    if (starters['cdm']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['cdm']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CDM</h4>"
+                    }
+                    html += "</div>"
+                }
+                
+                // Start LCDM
+                html += "<div class='col text-center'>";
+                
+                if (starters['lcdm']) {
+                    if (starters['lcdm']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['lcdm']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CDM</h4>"
+                    }
+                }
+                
+                // Close out LCDM col and start LWB
+                html += "</div><div class='col text-center'>";
+                
+                if (starters['lwb']) {
+                    if (starters['lwb']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['lwb']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>LWB</h4>"
+                    }
+                }
+
+                // Close out LWB and DEF-MID row and start MID row
+                html += "</div></div><div class='row my-4'><div class='col text-center' style='height: 100px'>";
+
+                if (starters['rm']) {
+                    if (starters['rm']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['rm']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>RM</h4>"
+                    }
+                }
+
+                // Close out RM col and start RCM
+                html += "</div><div class='col text-center'>";
+                
+                if (starters['rcm']) {
+                    if (starters['rcm']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['rcm']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CM</h4>"
+                    }
+                }
+                
+                // Close out RCM col and start CM
+                html += "</div>";
+                
+                if (starters['cm']) {
+                    html += "<div class='col text-center'>";
+                    if (starters['cm']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['cm']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CM</h4>"
+                    }
+                    html += "</div>"
+                }
+                
+                // Start LCM
+                html += "<div class='col text-center'>";
+                
+                if (starters['lcm']) {
+                    if (starters['lcm']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['lcm']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CM</h4>"
+                    }
+                }
+                
+                // Close out LCM col and start LM
+                html += "</div><div class='col text-center'>";
+                
+                if (starters['lm']) {
+                    if (starters['lm']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['lm']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>LM</h4>"
+                    }
+                }
+                
+                // Close out LM and MID row and start ATT-MID row
+                html += "</div></div><div class='row my-4'><div class='col text-center' style='height: 100px'>";
+
+                if (starters['rw']) {
+                    if (starters['rw']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['rw']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>RW</h4>"
+                    }
+                }
+
+                // Close out RW col and start RAM
+                html += "</div><div class='col text-center'>";
+                
+                if (starters['ram']) {
+                    if (starters['ram']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['ram']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>RAM</h4>"
+                    }
+                }
+                
+                // Close out RAM col and start CAM
+                html += "</div>";
+                
+                if (starters['cam']) {
+                    html += "<div class='col text-center'>";
+                    if (starters['cam']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['cam']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CAM</h4>"
+                    }
+                    html += "</div>"
+                }
+                
+                // Start LAM
+                html += "<div class='col text-center'>";
+                    
+                if (starters['lam']) {
+                    if (starters['lam']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['lam']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>LAM</h4>"
+                    }
+                }
+                
+                // Close out LAM col and start LW
+                html += "</div><div class='col text-center'>";
+                    
+                if (starters['lw']) {
+                    if (starters['lw']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['lw']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>LW</h4>"
+                    }
+                }
+                        
+                // Close out LW and ATT-MID row and start FOR row
+                html += "</div></div><div class='row my-4'><div class='col text-center' style='height: 100px'>";
+
+                if (starters['str']) {
+                    if (starters['str']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['str']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>ST</h4>"
+                    }
+                }
+                
+                // Close out STR col and start CF
+                html += "</div>";
+                
+                if (starters['cf']) {
+                    html += "<div class='col text-center'>";
+                    if (starters['cf']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['cf']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>CF</h4>"
+                    }
+                    html += "</div>"
+                }
+                
+                // Start STL
+                html += "<div class='col text-center'>";
+                
+                if (starters['stl']) {
+                    if (starters['stl']['enabled']) {
+                        html += "<div class='full-circle mx-auto'></div><h4 class='text-white'>"+ starters['stl']['lName'] +"</h4>"
+                    } else {
+                        html += "<div class='blank-circle mx-auto'></div><h4 class='text-white'>ST</h4>"
+                    }
+                }
+
+                // Clouse out STL and FOR row
+                html += "</div></div>";
+
+                document.getElementById('pitch').innerHTML = html;
+                $(".blank-circle").css({
+                    'height': '100px',
+                    'width': '100px',
+                    'background-color': '#bbb',
+                    'border-radius': '50%',
+                    'vertical-align': 'middle'
+                });
+
+                let squad_color = team['color'] || 'red';
+                $(".full-circle").css({
+                    'height': '100px',
+                    'width': '100px',
+                    'background-color': squad_color,
+                    'border-radius': '50%',
+                    'vertical-align': 'middle'
+                });
+            };
+
+            $('#guess-form').on('submit', function(event) {
+                event.preventDefault();
+                let data = $(this).serializeArray();
+                let guess = data[0]['value'];
+                checkGuessWithPlayers(guess.toLowerCase());
+            });
+
+            $('#guess-text').on('keyup', function(event) {
+                event.preventDefault();
+                let data = $(this).serializeArray();
+                let guess = data[0]['value'];
+                checkGuessWithPlayers(guess.toLowerCase());
+            });
+
+            function checkGuessWithPlayers(guess) {
+                for (var player in starters) {
+                    if (starters[player]['fName'].toLowerCase() == guess || starters[player]['lName'].toLowerCase() == guess) {
+                        starters[player]['enabled'] = true;
+                        updatePositionsDisplay();
+                        document.getElementById('guess-text').value = "";
+                        return;
+                    }
+                };
+            };
+
+            setupView();
+        });
+    </script>
+</head>
+
+
+<body>
+    <header class="mb-4">
+        <nav class="navbar bg-dark text-light py-3">
+            <div class="col-md-2 text-center">
+                <a href="/" style="text-decoration:none"
+                class="text-light"><h2>Historic Teamz</h2></a>
+            </div>
+            <div class="col text-center"></div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row my-3">
+                <div class="col text-center">
+                    <h3 class="text-primary my-2"
+                    ><%= team['game'] %> <%= team['season'] %>-<%= team['season'] + 1 %></h3>
+                    <div class="row">
+                        <div class="col-xl-2"></div>
+                        <% if (team['home']) { %>
+                            <div class="col-lg-3 px-0 text-right">
+                                <h4 class="text-success"
+                                ><%= team['organization'] %></h4>
+                            </div>
+                            <div class="col px-0 text-right">
+                                <h4 class="text-success"
+                                ><%= team['score'][0] %></h4>
+                            </div>
+                            <div class="col px-0"><h4>v</h4></div>
+                            <div class="col px-0 text-left">
+                                <h4><%= team['score'][1] %></h4>
+                            </div>
+                            <div class="col-lg-3 px-0 text-left">
+                                <h4><%= team['opposition'] %></h4>
+                            </div>
+                        <% } else { %>
+                            <div class="col-lg-3 px-0">
+                                <h4><%= team['opposition'] %></h4>
+                            </div>
+                            <div class="col px-0">
+                                <h4><%= team['score'][1] %></h4>
+                            </div>
+                            <div class="col px-0"><h4>v</h4></div>
+                            <div class="col px-0">
+                                <h4 class="text-success"
+                                ><%= team['score'][0] %></h4>
+                            </div>
+                            <div class="col-lg-3 px-0">
+                                <h4 class="text-success"
+                                ><%= team['organization'] %></h4>
+                            </div>
+                        <% } %>
+                        <div class="col-xl-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-4" id="guess-box">
+                <form id="guess-form">
+                    <div class="row form-group">
+                        <div class="col">
+                            <input type="text" class="form-control" name="guess" id="guess-text">
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <button type="submit" class="btn btn-success">Enter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="my-3" id="pitch"></div>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+        crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" 
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" 
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" 
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" 
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
