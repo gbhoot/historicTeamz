@@ -1,3 +1,53 @@
-<p>
-  team works!
-</p>
+<div class="container">
+    <div class="row my-3">
+        <div class="col text-center">
+            <h3 class="text-primary my-2">
+                {{ team['game'] }} {{ team['season'] }}-
+                {{ team['season'] + 1 }}
+            </h3>
+
+            <div class="row">
+                <div class="col-xl-2"></div>
+                <ng-template *ngIf="homeAway">
+                    <div class="col-lg-3 text-right">
+                        <h4 class="text-success">
+                            {{ team['organization'] }}
+                        </h4>
+                    </div>
+                    <div class="col text-right">
+                        <h4 class="text-success">
+                            {{ team['score'][0] }}
+                        </h4>
+                    </div>
+                    <div class="col"><h4>v</h4></div>
+                    <div class="col text-left">
+                        <h4>{{ team['score'][1] }}</h4>
+                    </div>
+                    <div class="col-lg-3 text-left">
+                        <h4>{{ team['opposition'] }}</h4>
+                    </div>
+                </ng-template>
+                <ng-template *ngIf="!homeAway">
+                    <div class="col-lg-3 text-right">
+                        <h4>{{ team['opposition'] }}</h4>
+                    </div>
+                    <div class="col text-right">
+                        <h4>{{ team['score'][1]</h4>
+                    </div>
+                    <div class="col"><h4>v</h4></div>
+                    <div class="col text-left">
+                        <h4 class="text-success">
+                            {{ team['score'][0] }}
+                        </h4>
+                    </div>
+                    <div class="col-lg-3 text-left">
+                        <h4 class="text-success">
+                            {{ team['organization'] }}
+                        </h4>
+                    </div>
+                </ng-template>
+                <div class="col-xl-2"></div>
+            </div>
+        </div>
+    </div>
+</div>

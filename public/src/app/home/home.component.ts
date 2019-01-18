@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { HttpService } from '../http.service';
+import { Router } from '@angular/router';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +17,8 @@ export class HomeComponent implements OnInit {
   teams_enable: boolean = false;
 
   constructor(
-    private _httpService: HttpService
+    private _httpService: HttpService,
+    private _router: Router
   ) { }
 
   ngOnInit() {
@@ -71,5 +74,10 @@ export class HomeComponent implements OnInit {
         console.log(data, 'No teams found for '+ selectedOrganization);
       };
     });
+  }
+
+  teamSelected(tidx: number) {
+    let ftid = this.teams[tidx]['_id'];
+    this._router.navigate(['teams/'+ ftid]);
   }
 }

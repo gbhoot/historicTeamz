@@ -3,12 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { HomeCountriesComponent } from './home-countries/home-countries.component';
-import { HomeOrganizationsComponent } from './home-organizations/home-organizations.component';
-import { HomeTeamsComponent } from './home-teams/home-teams.component';
+import { TeamComponent } from './team/team.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent}
+  { path: '', component: HomeComponent },
+  { path: 'teams/:id', component: TeamComponent }
 ];
 
 @NgModule({

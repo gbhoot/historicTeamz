@@ -23,6 +23,6 @@ export class HttpService {
   }
 
   getTeam(ftid: any) {
-    return this._httpService.get('db/v1/futbalTeams/'+ ftid);
+    return this._httpService.get('db/v1/futbalTeams/teams/'+ ftid);
   }
 }

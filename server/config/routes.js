@@ -55,6 +55,6 @@ module.exports = function(app) {
 
     // Remaining routes direct to front-end Angular app
     app.all("**", function(req, res, next) {
-        res.sendFile(path.resolve(__dirname, './public/dist/public/index.html'));
+        res.sendFile(path.resolve(__dirname, '../../public/dist/public/index.html'));
     });
 }
