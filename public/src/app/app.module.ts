@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { HomeCountriesComponent } from './home-countries/home-countries.component';
 import { HomeOrganizationsComponent } from './home-organizations/home-organizations.component';
 import { HomeTeamsComponent } from './home-teams/home-teams.component';
+import { TeamComponent } from './team/team.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { HomeTeamsComponent } from './home-teams/home-teams.component';
     HomeComponent,
     HomeCountriesComponent,
     HomeOrganizationsComponent,
-    HomeTeamsComponent
+    HomeTeamsComponent,
+    TeamComponent
   ],
   imports: [
     BrowserModule,

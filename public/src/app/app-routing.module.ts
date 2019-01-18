@@ -8,7 +8,7 @@ import { HomeOrganizationsComponent } from './home-organizations/home-organizati
 import { HomeTeamsComponent } from './home-teams/home-teams.component';
 
 const routes: Routes = [
-  {path: '', component: HomeCountriesComponent}
+  {path: '', component: HomeComponent}
 ];
 
 @NgModule({

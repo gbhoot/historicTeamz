@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col text-center">
+        <div class="my-4 list-group">
+            <a *ngFor="let country of countries, let i=index"
+            class="list-group-item list-group-item-action"
+            (click)="countrySelected(i)"
+            >{{ country }}</a>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="org_enable">
+    <div class="col text-center">
+        <div class="my-4 list-group">
+            <a *ngFor="let organization of organizations, let i=index"
+            class="list-group-item list-group-item-action"
+            (click)="organizationSelected(i)"
+            >{{ organization }}</a>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="teams_enable">
+    <div class="col text-center">
+        <div class="my-4 list-group">
+            <a *ngFor="let team of teams, let i=index"
+            class="list-group-item list-group-item-action"
+            (click)="teamSelected(i)"
+            >{{ team.season }}-{{ team.season + 1 }} {{ team.game }}</a>
+        </div>
+    </div>
+</div>
