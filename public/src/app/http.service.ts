@@ -14,12 +14,12 @@ export class HttpService {
     return this._httpService.get('/db/v1/futbalTeams/countries');
   }
 
-  getAllOrganizationsForCountry(cid: any) {
-    return this._httpService.get('db/v1/futbalTeams/countries/'+ cid +'/organizations');
+  getAllOrganizationsForCountry(country: any) {
+    return this._httpService.get('db/v1/futbalTeams/countries/'+ country +'/organizations');
   }
 
-  getAllTeamsForOrganizations(oid: any) {
-    return this._httpService.get('/db/v1/futbalTeams/organizations/'+ oid +'/teams');
+  getAllTeamsForOrganizations(organization: any) {
+    return this._httpService.get('/db/v1/futbalTeams/organizations/'+ organization +'/teams');
   }
 
   getTeam(ftid: any) {

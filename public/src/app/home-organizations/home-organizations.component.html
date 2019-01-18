@@ -1,3 +1,13 @@
-<p>
-  home-organizations works!
-</p>
+<div class="row">
+    <div class="col text-center">
+        <div class="my-4 list-group">
+            <a *ngFor="let organization of organizations, let i=index"
+            class="list-group-item list-group-item-action"
+            (click)="organizationSelected(i)"
+            >{{ country }}</a>
+        </div>
+    </div>
+</div>
+
+<app-home-teams *ngIf="teams_enable"
+[selectedOrg]="selectedOrganization"></app-home-teams>

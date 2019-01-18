@@ -1,8 +1,13 @@
-<div class="col text-center">
-    <div id="countries" class="my-4 list-group">
-        <a *ngFor="let country of countries"
-        class="list-group-item list-group-item-action"
-        id="country._id"
-        ></a>
+<div class="row">
+    <div class="col text-center">
+        <div class="my-4 list-group">
+            <a *ngFor="let country of countries, let i=index"
+            class="list-group-item list-group-item-action"
+            (click)="countrySelected(i)"
+            >{{ country }}</a>
+        </div>
     </div>
 </div>
+
+<app-home-organizations *ngIf="org_enable"
+[selectedCountry]="selectedCountry"></app-home-organizations>

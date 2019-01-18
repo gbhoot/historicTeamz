@@ -9,9 +9,11 @@ import { HttpService } from '../http.service';
 })
 export class HomeCountriesComponent implements OnInit {
   countries: any;
+  org_enable: boolean = false;
+  selectedCountry: string = "";
 
   constructor(
-    private _httpSerivce: HttpService
+    private httpService: HttpService
   ) { }
 
   ngOnInit() {
@@ -19,14 +21,18 @@ export class HomeCountriesComponent implements OnInit {
   }
 
   getAllCountries() {
-    let observable = this._httpSerivce.getAllCountries();
+    let observable = this.httpService.getAllCountries();
     observable.subscribe(data => {
       if (data['message'] == 'Success') {
         this.countries = data['countries'];
-        console.log(this.countries);
       } else {
         console.log(data, 'No countries found');
       };
     });
+  }
+
+  countrySelected(cidx: number) {
+    this.selectedCountry = this.countries[cidx];
+    this.org_enable = true;
   }
 }
