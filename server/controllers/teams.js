@@ -183,5 +183,80 @@ module.exports = {
                 res.render('team', response);
             };
         });
-    }
+    },
+
+    addViewForTeam: function(ftid, callback) {
+        let opts = { runValidators: true };
+        // FutbalTeam.find({_id: ftid}, function(error, teams) {
+        //     if (error) {
+        //         console.log("There was an issue: ", error);
+        //         callback(error);
+        //     } else {
+        //         if (teams) {
+        //             let team = teams[0];
+        //             if (team['views']) {
+                        FutbalTeam.updateOne({_id: ftid}, {$inc: {views: 1}}, {upsert: true}, function(error) {
+                            let response = {};
+                            if (error) {
+                                console.log("There was an issue: ", error);
+                                callback(error);
+                            } else {
+                                FutbalTeam.find({_id: ftid}, function(error, teams) {
+                                    if (error) {
+                                        console.log("There was an issue: ", error);
+                                        callback(error);
+                                    } else {
+                                        if (teams) {
+                                            let team = teams[0];
+                                            response = {
+                                                message: "Success",
+                                                team: team
+                                            };
+                                        } else {
+                                            response = {
+                                                message: 'Failure',
+                                                countent: 'No teams exist with this ID'
+                                            };
+                                        };
+                                        callback(response);
+                                    };
+                                });
+                            };
+                        });
+                    // } else {
+                    //     console.log("Coming in here");
+                    //     FutbalTeam.updateOne({_id: ftid}, {$set: {views: 1}}, function(error) {
+                    //         if (error) {
+                    //             console.log("There was an issue: ", error);
+                    //             return error;
+                    //         } else {
+                    //             FutbalTeam.find({_id: ftid}, function(error, teams) {
+                    //                 if (error) {
+                    //                     console.log("There was an issue: ", error);
+                    //                     callback(error);
+                    //                 } else {
+                    //                     let response = {};
+                    //                     if (teams) {
+                    //                         let team = teams[0];
+                    //                         response = {
+                    //                             message: "Success",
+                    //                             team: team
+                    //                         };
+                    //                         console.log(team);
+                    //                     } else {
+                    //                         response = {
+                    //                             message: "Failure", 
+                    //                             content: "No teams exist with this ID"
+                    //                         };
+                    //                     };
+                    //                     callback(response);
+                    //                 };
+                    //             });
+                    //         };
+                    //     });
+                    // };
+                // };
+            // };
+        // });
+    },
 }

@@ -19,4 +19,8 @@ app.set('view engine', 'ejs');
 
 require('./server/config/routes.js')(app);
 
-app.listen(8000);
+var server = app.listen(8000);
+// var io = require('socket.io')(server);
+require('./server/config/socket.js')(server);
+
+// io.on('connection', )

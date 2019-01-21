@@ -16,6 +16,7 @@ var FutballTeamSchema = new mongoose.Schema({
     attackingMids: {type: Number, required: true},
     wingers: {type: Number, required: true},
     forwards: {type: Number, required: true},
+    views: {type: Number},
     starters: {
         // gk: {enabled: false, fName: String, lName: String},
         // rb: {enabled: false, fName: String, lName: String},

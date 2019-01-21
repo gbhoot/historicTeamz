@@ -13,11 +13,18 @@
         crossorigin="anonymous">
     <link rel="stylesheet" href="/team.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
         $(document).ready(function() {
             let team = <%-JSON.stringify(team)%>;
+            let ftid = team['_id'];
             let starters = team['starters'];
             let bench = team['bench'];
+            var socket = io();
+
+            socket.emit('team_view', {
+                ftid: ftid
+            });
             
             function setupView() {
                 $('#pitch').css('backgroundImage', 'url(/images/pitch-half.png');
