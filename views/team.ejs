@@ -341,7 +341,7 @@
 
             function checkGuessWithPlayers(guess) {
                 for (var player in starters) {
-                    if (starters[player]['fName'].toLowerCase() == guess || starters[player]['lName'].toLowerCase() == guess) {
+                    if ((starters[player]['fName'] && starters[player]['fName'].toLowerCase() == guess) || starters[player]['lName'].toLowerCase() == guess) {
                         starters[player]['enabled'] = true;
                         updatePositionsDisplay();
                         document.getElementById('guess-text').value = "";

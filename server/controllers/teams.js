@@ -40,12 +40,36 @@ module.exports = {
         });
     },
 
+    getAllByViews: function(req, res) {
+        FutbalTeam.find({}, function(error, teams) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                res.json(error);
+            } else {
+                let response = {};
+                if (teams) {
+                    response = {
+                        message: "Success",
+                        teams: teams
+                    };
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No teams found"
+                    };
+                };
+                res.json(response);
+            }
+        }).sort({views: -1});
+    },
+
     getAllCountries: function(req, res) {
         FutbalTeam.distinct('country', function(error, countries) {
             if (error) {
                 console.log("There was an issue: ", error);
                 res.json(error);
             } else {
+                countries.sort();
                 let response = {
                     message: "Success",
                     countries: countries
@@ -56,11 +80,12 @@ module.exports = {
     },
 
     getAllOrganizations: function(req, res) {
-        FutbalTeam.distinct('organization', function(error, teams) {
+        FutbalTeam.distinct('organization', function(error, organizations) {
             if (error) {
                 console.log("There was an issue: ", error);
                 res.json(error);
             } else {
+                organizations.sort
                 let response = {
                     message: "Success",
                     organizations: organizations
@@ -85,6 +110,7 @@ module.exports = {
                             res.json(error);
                         } else {
                             if (organizations) {
+                                organizations.sort();
                                 response = {
                                     message: "Success",
                                     organizations: organizations
@@ -107,7 +133,7 @@ module.exports = {
         });
     },
 
-    getAllGamesForOrganization: function(req, res) {
+    getAllTeamsForOrganization: function(req, res) {
         let organization = req.params.organization;
         FutbalTeam.find({organization: organization}, function(error, teams) {
             if (error) {
@@ -127,7 +153,7 @@ module.exports = {
                 }
                 res.json(response);
             };
-        });
+        }).sort({season: -1});
     },
 
     createTeam: function(req, res) {
@@ -187,76 +213,50 @@ module.exports = {
 
     addViewForTeam: function(ftid, callback) {
         let opts = { runValidators: true };
-        // FutbalTeam.find({_id: ftid}, function(error, teams) {
-        //     if (error) {
-        //         console.log("There was an issue: ", error);
-        //         callback(error);
-        //     } else {
-        //         if (teams) {
-        //             let team = teams[0];
-        //             if (team['views']) {
-                        FutbalTeam.updateOne({_id: ftid}, {$inc: {views: 1}}, {upsert: true}, function(error) {
-                            let response = {};
-                            if (error) {
-                                console.log("There was an issue: ", error);
-                                callback(error);
-                            } else {
-                                FutbalTeam.find({_id: ftid}, function(error, teams) {
-                                    if (error) {
-                                        console.log("There was an issue: ", error);
-                                        callback(error);
-                                    } else {
-                                        if (teams) {
-                                            let team = teams[0];
-                                            response = {
-                                                message: "Success",
-                                                team: team
-                                            };
-                                        } else {
-                                            response = {
-                                                message: 'Failure',
-                                                countent: 'No teams exist with this ID'
-                                            };
-                                        };
-                                        callback(response);
-                                    };
-                                });
+        FutbalTeam.updateOne({_id: ftid}, {$inc: {views: 1}}, {upsert: true}, function(error) {
+            let response = {};
+            if (error) {
+                console.log("There was an issue: ", error);
+                callback(error);
+            } else {
+                FutbalTeam.find({_id: ftid}, function(error, teams) {
+                    if (error) {
+                        console.log("There was an issue: ", error);
+                        callback(error);
+                    } else {
+                        if (teams) {
+                            let team = teams[0];
+                            response = {
+                                message: "Success",
+                                team: team
                             };
-                        });
-                    // } else {
-                    //     console.log("Coming in here");
-                    //     FutbalTeam.updateOne({_id: ftid}, {$set: {views: 1}}, function(error) {
-                    //         if (error) {
-                    //             console.log("There was an issue: ", error);
-                    //             return error;
-                    //         } else {
-                    //             FutbalTeam.find({_id: ftid}, function(error, teams) {
-                    //                 if (error) {
-                    //                     console.log("There was an issue: ", error);
-                    //                     callback(error);
-                    //                 } else {
-                    //                     let response = {};
-                    //                     if (teams) {
-                    //                         let team = teams[0];
-                    //                         response = {
-                    //                             message: "Success",
-                    //                             team: team
-                    //                         };
-                    //                         console.log(team);
-                    //                     } else {
-                    //                         response = {
-                    //                             message: "Failure", 
-                    //                             content: "No teams exist with this ID"
-                    //                         };
-                    //                     };
-                    //                     callback(response);
-                    //                 };
-                    //             });
-                    //         };
-                    //     });
-                    // };
-                // };
-            // };
-        // });
+                        } else {
+                            response = {
+                                message: 'Failure',
+                                countent: 'No teams exist with this ID'
+                            };
+                        };
+                        callback(response);
+                    };
+                });
+            };
+        });
+    },
+
+    addBadgeToTeam: function(req, res) {
+        let ftid = req.params.id;
+        let inc_team = req.body;
+        let opts = { runValidators: true };
+        FutbalTeam.updateOne({_id: ftid}, inc_team, opts, function(error) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                res.json(error);
+            } else {
+                let response = {
+                    message: "Success"
+                };
+                res.json(response);
+            };
+        });
     },
 }
