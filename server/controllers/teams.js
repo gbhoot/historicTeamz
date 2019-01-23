@@ -96,7 +96,7 @@ module.exports = {
     },
 
     getAllOrganizationsForCountry: function(req, res) {
-        let country = req.params.country;
+        let country = req.params.country.replace("%20", " ");
         FutbalTeam.find({country: country}, function(error, teams) {
             if (error) {
                 console.log("There was an issue: ", error);
@@ -134,7 +134,7 @@ module.exports = {
     },
 
     getAllTeamsForOrganization: function(req, res) {
-        let organization = req.params.organization;
+        let organization = req.params.organization.replace("%20", " ");
         FutbalTeam.find({organization: organization}, function(error, teams) {
             if (error) {
                 console.log("There was an issue: ", error);

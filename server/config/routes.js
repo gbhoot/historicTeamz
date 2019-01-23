@@ -51,4 +51,8 @@ module.exports = function(app) {
     app.post('/db/v1/futbalTeams/:id/addBadge', function(req, res) {
         futbalTeams.addBadgeToTeam(req, res);
     });
+
+    app.post('/db/v1/futbalTeams/:id/addView', function(req, res) {
+        
+    });
 }
