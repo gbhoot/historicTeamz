@@ -211,7 +211,24 @@ module.exports = {
         });
     },
 
-    addViewForTeam: function(ftid, callback) {
+    addViewForTeam: function(req, res) {
+        let ftid = req.params.id;
+        let opts = { runValidators: true };
+        FutbalTeam.updateOne({_id: ftid}, {$inc: {views: 1}}, {upsert: true}, function(error) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                res.json(error);
+            } else {
+                let response = {
+                    message: "Success",
+                    content: "View successfully to game"
+                };
+                res.json(response);
+            };
+        });
+    },
+
+    addViewForTeamCB: function(ftid, callback) {
         let opts = { runValidators: true };
         FutbalTeam.updateOne({_id: ftid}, {$inc: {views: 1}}, {upsert: true}, function(error) {
             let response = {};

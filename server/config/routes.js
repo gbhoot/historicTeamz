@@ -52,7 +52,7 @@ module.exports = function(app) {
         futbalTeams.addBadgeToTeam(req, res);
     });
 
-    app.post('/db/v1/futbalTeams/:id/addView', function(req, res) {
-        
+    app.get('/db/v1/futbalTeams/:id/addView', function(req, res) {
+        futbalTeams.addViewForTeam(req, res);
     });
 }
