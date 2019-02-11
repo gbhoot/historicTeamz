@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/jquery": "^3.3.29",
     "body-parser": "^1.18.3",
+    "cassandra-driver": "^4.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",

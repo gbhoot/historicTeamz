@@ -17,10 +17,11 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 
-require('./server/config/routes.js')(app);
+// require('./server/config/routes.js')(app);
+var client = require('./server/config/cassandra.js');
 
 var server = app.listen(8000);
 // var io = require('socket.io')(server);
-require('./server/config/socket.js')(server);
+// require('./server/config/socket.js')(server);
 
 // io.on('connection', )
