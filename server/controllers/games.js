@@ -65,6 +65,85 @@ module.exports = {
         }).sort({views: -1});
     },
 
+    getAllTeamsForCountry: function(req, res) {
+        let cid = req.params.country;
+        Game.find({country: cid}, function(error, games) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                res.json(error);
+            } else {
+                let response = {};
+                if (games) {
+                    Game.distinct('team', {country: cid}, function(error, teams) {
+                        if (error) {
+                            console.log("There was an issue: ", error);
+                            res.json(error);
+                        } else {
+                            if (teams) {
+                                teams.sort();
+                                response = {
+                                    message: "Success",
+                                    teams: teams
+                                };
+                            } else {
+                                response = {
+                                    message: "Failure",
+                                    content: "No teams found for country"
+                                };
+                            };
+                            res.json(response);
+                        };
+                    });
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No games found for country"
+                    }
+                    res.json(response);
+                };
+            };
+        });
+    },
+
+    getAllTeamsForCountryCB: function(cid, callback) {
+        Game.find({country: cid}, function(error, games) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                callback(error);
+            } else {
+                let response = {};
+                if (games) {
+                    Game.distinct('team', {country: cid}, function(error, teams) {
+                        if (error) {
+                            console.log("There was an issue: ", error);
+                            callback(error);
+                        } else {
+                            if (teams) {
+                                teams.sort();
+                                response = {
+                                    message: "Success",
+                                    teams: teams
+                                };
+                            } else {
+                                response = {
+                                    message: "Failure",
+                                    content: "No teams found for country"
+                                };
+                            };
+                            callback(response);
+                        };
+                    });
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No games found for country"
+                    }
+                    callback(response);
+                };
+            };
+        });
+    },
+
     getAllGamesForTeam: function(req, res) {
         let tid = req.params.team;
         Game.find({team: tid}, function(error, games) {
@@ -87,6 +166,69 @@ module.exports = {
                 res.json(response);
             }
         }).sort({season: -1});
+    },
+
+    getAllCompetitionsForTeam: function(req, res) {
+        let tid = req.params.team;
+        Game.find({team: tid}, function(error, games) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                res.json(error);
+            } else {
+                let response = {};
+                if (games) {
+                    Game.distinct('competition', {team: tid}, function(error, competitions) {
+                        if (error) {
+                            console.log("There was an issue: ", error);
+                            res.json(error);
+                        } else {
+                            if (competitions) {
+                                response = {
+                                    message: "Success",
+                                    competitions: competitions
+                                };
+                            } else {
+                                response = {
+                                    message: "Failure",
+                                    content: "No distinct competitions found"
+                                };
+                            };
+                            res.json(response);
+                        }
+                    });
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No games found with this team"
+                    };
+                    res.json(response);
+                };
+            }
+        })
+    },
+
+    getAllGamesForCompetition: function(req, res) {
+        let compid = req.params.comp;
+        Game.find({competition: compid}, function(error, games) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                res.json(error);
+            } else {
+                let response = {};
+                if (games) {
+                    response = {
+                        message: "Success",
+                        games: games
+                    };
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No games found"
+                    };
+                };
+                res.json(response);
+            };
+        });
     },
 
     create: function(req, res) {

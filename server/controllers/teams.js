@@ -1,4 +1,5 @@
-var Team = require('../models/team.js');
+var Team = require('../models/team.js'),
+    games = require('../controllers/games.js');
 
 module.exports = {
     getOne: function(req, res) {
@@ -39,12 +40,12 @@ module.exports = {
                 };    
                 res.json(response);
             };    
-        });    
+        });
     },
 
-    getAllTeamsForCountry: function(req, res) {
-        let cid = req.params.country;
-        Team.find({country: cid}, function(error, teams) {
+    getMultiple: function(req, res) {
+        let tids = req.body['teams'];
+        Team.find({_id: tids}, function(error, teams) {
             if (error) {
                 console.log("There was an issue: ", error);
                 res.json(error);
@@ -53,7 +54,7 @@ module.exports = {
                 if (teams) {
                     response = {
                         message: "Success",
-                        teams: teams    
+                        teams: teams
                     };
                 } else {
                     response = {
@@ -62,7 +63,37 @@ module.exports = {
                     };
                 };
                 res.json(response);
-            };    
+            };
+        });
+    },
+
+    getAllTeamsForCountry: function(req, res) {
+        let cid = req.params.country;
+        games.getAllTeamsForCountryCB(cid, function(response) {
+            if (response['message'] == "Success") {
+                let tids = response['teams'];
+                Team.find({_id: tids}, function(error, teams) {
+                    if (error) {
+                        console.log("There was an issue: ", error);
+                        res.json(error);
+                    } else {
+                        if (teams) {
+                            response = {
+                                message: "Success",
+                                teams: teams
+                            };
+                        } else {
+                            response = {
+                                message: "Failure",
+                                content: "No teams found"
+                            };
+                        };
+                        res.json(response);
+                    };
+                });
+            } else {
+                res.json(response);
+            };
         });
     },
 

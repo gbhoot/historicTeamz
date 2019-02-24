@@ -42,6 +42,30 @@ module.exports = {
         });
     },
 
+    getMultiple: function(req, res) {
+        let pids = req.body['players'];
+        Player.find({_id: pids}, function(error, players) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                res.json(error);
+            } else {
+                let response = {};
+                if (players) {
+                    response = {
+                        message: "Success",
+                        players: players
+                    };
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No players found"
+                    };
+                };
+                res.json(response);
+            };
+        });
+    },
+
     create: function(req, res) {
         let inc_player = req.body;
         let player = new Player(inc_player);
@@ -89,4 +113,33 @@ module.exports = {
             };
         });
     },
+
+    delete: function(req, res) {
+        let pid = req.params.id;
+        Player.findOne({_id: pid}, function(error, player) {
+            if (error) {
+                console.log("There was an issue: ", error);
+                res.json(error);
+            } else {
+                let response = {};
+                if (player) {
+                    Player.deleteOne({_id: pid}, function(error) {
+                        if (error) {
+                            console.log("There was an issue: ", error);
+                            res.json(error);
+                        } else {
+                            response['message'] = "Success";
+                        }
+                        res.json(response);
+                    });
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "Player not found, couldn't delete"
+                    };
+                    res.json(response);
+                }
+            };
+        });
+    }
 }
