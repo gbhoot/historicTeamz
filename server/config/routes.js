@@ -26,6 +26,7 @@ module.exports = function(app) {
         countries.getAll(req, res);
     });
 
+    // Get all countries with given query
     app.put('/db/v2/countries/query', function(req, res) {
         countries.getAllWithName(req, res);
     });
@@ -65,6 +66,11 @@ module.exports = function(app) {
         teams.getAll(req, res);
     });
 
+    // Get all teams with given query
+    app.put('/db/v2/teams/query', function(req, res) {
+        teams.getAllWithName(req, res);
+    });
+
     // Get all teams for country by ID
     app.get('/db/v2/teams/:country', function(req, res) {
         teams.getAllTeamsForCountry(req, res);
@@ -88,6 +94,11 @@ module.exports = function(app) {
     // Create team
     app.post('/db/v2/teams', function(req, res) {
         teams.create(req, res);
+    });
+
+    // Delete team
+    app.delete('/db/v2/teams/:id', function(req, res) {
+        teams.delete(req, res);
     });
 
     // Add badge URL to team by ID

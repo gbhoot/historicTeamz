@@ -74,13 +74,14 @@ module.exports = {
     },
 
     getAllWithName: function(req, res) {
-        let query = reg.body['name'];
+        let query = req.body['name'];
         console.log(query);
-        Country.find({name: query}, function(error, countries) {
+        Country.find({name: {$regex: query, $options: 'i'}}, function(error, countries) {
             if (error) {
                 console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
+                console.log(countries);
                 let response = {};
                 if (countries) {
                     response = {

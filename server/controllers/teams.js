@@ -54,14 +54,13 @@ module.exports = {
 
     getAllWithName: function(req, res) {
         let query = req.body['name'];
-        var reg = new RegExp(query, 'i');
-        Team.find({name: reg}, function(error, teams) {
+        Team.find({name: {$regex: query, $options: 'i'}}, function(error, teams) {
             if (error) {
                 console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {};
-                if (teams) {
+                if (teams.length) {
                     response = {
                         message: "Success",
                         teams: teams
@@ -195,6 +194,21 @@ module.exports = {
         let tid = req.params.id;
         let edit_team = req.body;
         Team.update({_id: tid}, edit_team, function(error) {
+            if (error) {
+                console.log("There was an issue: ", error['message']);
+                res.json(error);
+            } else {
+                let response = {
+                    message: "Success"
+                };
+                res.json(response);
+            };
+        });
+    },
+
+    delete: function(req, res) {
+        let tid = req.params.id;
+        Team.deleteOne({_id: tid}, function(error) {
             if (error) {
                 console.log("There was an issue: ", error['message']);
                 res.json(error);
