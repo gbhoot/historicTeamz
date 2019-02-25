@@ -4,7 +4,7 @@ module.exports = {
     getAll: function(req, res) {
         Game.find({}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {
@@ -20,7 +20,7 @@ module.exports = {
         let gid = req.params.id;
         Game.find({_id: gid}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {};
@@ -45,7 +45,7 @@ module.exports = {
     getAllByViews: function(req, res) {
         Game.find({}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {};
@@ -69,14 +69,14 @@ module.exports = {
         let cid = req.params.country;
         Game.find({country: cid}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {};
                 if (games) {
                     Game.distinct('team', {country: cid}, function(error, teams) {
                         if (error) {
-                            console.log("There was an issue: ", error);
+                            console.log("There was an issue: ", error['message']);
                             res.json(error);
                         } else {
                             if (teams) {
@@ -108,27 +108,19 @@ module.exports = {
     getAllTeamsForCountryCB: function(cid, callback) {
         Game.find({country: cid}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 callback(error);
             } else {
                 let response = {};
-                if (games) {
+                if (games.length) {
                     Game.distinct('team', {country: cid}, function(error, teams) {
                         if (error) {
-                            console.log("There was an issue: ", error);
+                            console.log("There was an issue: ", error['message']);
                             callback(error);
                         } else {
-                            if (teams) {
-                                teams.sort();
-                                response = {
-                                    message: "Success",
-                                    teams: teams
-                                };
-                            } else {
-                                response = {
-                                    message: "Failure",
-                                    content: "No teams found for country"
-                                };
+                            response = {
+                                message: "Success",
+                                teams: teams
                             };
                             callback(response);
                         };
@@ -148,7 +140,7 @@ module.exports = {
         let tid = req.params.team;
         Game.find({team: tid}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {};
@@ -168,50 +160,36 @@ module.exports = {
         }).sort({season: -1});
     },
 
-    getAllCompetitionsForTeam: function(req, res) {
+    getAllGamesForTeamAndCompetition: function(req, res) {
         let tid = req.params.team;
-        Game.find({team: tid}, function(error, games) {
+        let compid = req.params.comp;
+        Game.find({team: tid, competition: compid}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {};
                 if (games) {
-                    Game.distinct('competition', {team: tid}, function(error, competitions) {
-                        if (error) {
-                            console.log("There was an issue: ", error);
-                            res.json(error);
-                        } else {
-                            if (competitions) {
-                                response = {
-                                    message: "Success",
-                                    competitions: competitions
-                                };
-                            } else {
-                                response = {
-                                    message: "Failure",
-                                    content: "No distinct competitions found"
-                                };
-                            };
-                            res.json(response);
-                        }
-                    });
+                    response = {
+                        message: "Success",
+                        games: games
+                    };
                 } else {
                     response = {
                         message: "Failure",
-                        content: "No games found with this team"
+                        content: "No games found for team & comp"
                     };
-                    res.json(response);
                 };
-            }
-        })
+                res.json(response);
+            };
+        });
     },
 
     getAllGamesForCompetition: function(req, res) {
         let compid = req.params.comp;
         Game.find({competition: compid}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {};
@@ -236,7 +214,7 @@ module.exports = {
         let game = new Game(inc_game);
         game.save(function(error) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {
@@ -251,7 +229,7 @@ module.exports = {
         let gid = req.params.id;
         Game.deleteOne({_id: gid}, function(error) {
             if (error) {
-                console.log("There was an issueL ", error);
+                console.log("There was an issueL ", error['message']);
                 res.json(error);
             } else {
                 let response = {
@@ -266,7 +244,7 @@ module.exports = {
         let gid = req.params.id;
         Game.find({_id: gid}, function(error, games) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.render('team', {message: "Error", error: error});
             } else {
                 let response = {};
@@ -293,7 +271,7 @@ module.exports = {
         let opts = { runValidators: true };
         Game.updateOne({_id: game}, {$inc: {views: 1}}, {upsert: true}, function(error) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {
@@ -310,12 +288,12 @@ module.exports = {
         Game.updateOne({_id: gid}, {$inc: {views: 1}}, {upsert: true}, function(error) {
             let response = {};
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 callback(error);
             } else {
                 Game.find({_id: gid}, function(error, games) {
                     if (error) {
-                        console.log("There was an issue: ", error);
+                        console.log("There was an issue: ", error['message']);
                         callback(error);
                     } else {
                         if (games && games.length == 1) {
@@ -344,7 +322,7 @@ module.exports = {
         let opts = { runValidators: true };
         Game.updateOne({_id: gid}, inc_game, opts, function(error) {
             if (error) {
-                console.log("There was an issue: ", error);
+                console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
                 let response = {

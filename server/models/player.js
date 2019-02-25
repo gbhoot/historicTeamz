@@ -2,7 +2,7 @@ var mongoose = require('../config/mongoose.js'),
     validators = require('mongoose-validators');
 
 var PlayerSchema = new mongoose.Schema({
-    firstName: {type: String, required: true},
+    firstName: {type: String},
     lastName: {type: String, required: true},
     country: {type: String, required: true},
     image: {type: String},

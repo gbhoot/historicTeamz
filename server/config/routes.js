@@ -2,7 +2,8 @@ var countries = require('../controllers/countries.js'),
     competitions = require('../controllers/competitions.js'),
     teams = require('../controllers/teams.js'),
     players = require('../controllers/players.js'),
-    games = require('../controllers/games.js');
+    games = require('../controllers/games.js'),
+    futbalTeams = require('../controllers/futbalteams.js');
 
 module.exports = function(app) {
     
@@ -15,10 +16,18 @@ module.exports = function(app) {
         futbalTeams.renderTeam(req, res);
     });
 
+    app.get('/games/createGame', function(req, res) {
+        res.render('createGame');
+    });
+
     // Database
     // Get all the countries in the database
     app.get('/db/v2/countries', function(req, res) {
         countries.getAll(req, res);
+    });
+
+    app.put('/db/v2/countries/query', function(req, res) {
+        countries.getAllWithName(req, res);
     });
 
     // Get one country by ID
@@ -36,14 +45,34 @@ module.exports = function(app) {
         competitions.getOne(req, res);
     });
 
+    // Get multiple competitions by IDs
+    app.get('/db/v2/competitions/multiple', function(req, res) {
+        competitions.getMultiple(req, res);
+    });
+
+    // Get all the competitions for specific team by ID
+    app.get('/db/v2/teams/:id/competitions', function(req, res) {
+        competitions.getAllCompetitionsForTeam(req, res);
+    });
+
     // Create competition
     app.post('/db/v2/competitions', function(req, res) {
         competitions.create(req, res);
     });
 
-    // Get all the teams in the database for specific country by ID
+    // Get all the teams in the database
+    app.get('/db/v2/teams', function(req, res) {
+        teams.getAll(req, res);
+    });
+
+    // Get all teams for country by ID
     app.get('/db/v2/teams/:country', function(req, res) {
         teams.getAllTeamsForCountry(req, res);
+    });
+
+    // Get all the team games for country by ID
+    app.get('/db/v2/teams/games/:country', function(req, res) {
+        teams.getAllTeamGamesForCountry(req, res);
     });
 
     // Get one team by ID
@@ -51,7 +80,7 @@ module.exports = function(app) {
         teams.getOne(req, res);
     });
 
-    // Get multple teams by IDs
+    // Get multiple teams by IDs
     app.get('/db/v2/teams/multiple', function(req, res) {
         teams.getMultiple(req, res);
     });
@@ -74,6 +103,11 @@ module.exports = function(app) {
     // Get one player by ID
     app.get('/db/v2/players/:id', function(req, res) {
         players.getOne(req, res);
+    });
+
+    // Get all players with query
+    app.put('/db/v2/players/query', function(req, res) {
+        players.getAllWithName(req, res);
     });
 
     // Get multiple players by IDs
@@ -101,6 +135,22 @@ module.exports = function(app) {
         players.delete(req, res);
     });
 
+    // Get one game by ID
+    app.get('/db/v2/games/:id', function(req, res) {
+        games.getOne(req, res);
+    });
+
+    // Get all the games in the database for specific team by ID
+    app.get('/db/v2/games/:team', function(req, res) {
+        games.getAllGamesForTeam(req, res);
+    });
+
+    // Get all the games in the database for specific team by ID and then for competition by ID
+    app.get('/db/v2/games/:team/:comp', function(req, res) {
+        games.getAllGamesForTeamAndCompetition(req, res);
+    });
+
+    // Version One
     app.get('/db/v1/futbalTeams', function(req, res) {
         futbalTeams.getAll(req, res);
     });
