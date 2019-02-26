@@ -50,7 +50,7 @@
                                     </h2>
                                 </div>
                                 <div class="col-md-2">
-                                    <button disabled class="btn btn-success"
+                                    <button disabled class="btn btn-success" id="teamBtn"
                                     >Next</button>
                                 </div>
                             </div>
@@ -59,10 +59,14 @@
                         <div id="collapseTeam" class="collapse show" aria-labelledby="headTeam" 
                         data-parent="#gameAccordion">
                             <div class="card-body text-left">
-                                <input class="form-control my-2" type="text" id="teamInp">
-                                <div class="form-group" id="teamSel">
-                                    <select multiple class="form-control" id="teamSelect">
-                                    </select>
+                                <div class="row">
+                                    <div class="col">
+                                        <input class="form-control my-2" type="text" id="teamInp">
+                                        <div class="form-group" id="teamSel">
+                                            <select multiple class="form-control" id="teamSelect">
+                                            </select>
+                                        </div>
+                                    </div>                                    
                                 </div>
                             </div>
                         </div>
@@ -80,7 +84,7 @@
                                     </h2>
                                 </div>
                                 <div class="col-md-2">
-                                    <button disabled class="btn btn-success"
+                                    <button disabled class="btn btn-success" id="oppoBtn"
                                     >Next</button>
                                 </div>
                             </div>
@@ -89,10 +93,14 @@
                         <div id="collapseOppo" class="collapse" aria-labelledby="headOppo" 
                         data-parent="#gameAccordion">
                             <div class="card-body">
-                                <input class="form-control my-2" type="text" id="oppoInp">
-                                <div class="form-group">
-                                    <select multiple class="form-control" id="oppoSelect">
-                                    </select>
+                                <div class="row">
+                                    <div class="col">
+                                        <input class="form-control my-2" type="text" id="oppoInp">
+                                        <div class="form-group">
+                                            <select multiple class="form-control" id="oppoSelect">
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +118,7 @@
                                     </h2>
                                 </div>
                                 <div class="col-md-2">
-                                    <button disabled class="btn btn-success"
+                                    <button disabled class="btn btn-success" id="compBtn"
                                     >Next</button>
                                 </div>
                             </div>
@@ -119,11 +127,15 @@
                         <div id="collapseComp" class="collapse" aria-labelledby="headComp" 
                         data-parent="#gameAccordion">
                             <div class="card-body">
-                                <input class="form-control my-2" type="text" id="compInp">
-                                <div class="form-group">
-                                    <select multiple class="form-control" id="compSelect"
-                                    form="#createGameForm">
-                                    </select>
+                                <div class="row">
+                                    <div class="col">
+                                        <input class="form-control my-2" type="text" id="compInp">
+                                        <div class="form-group">
+                                            <select multiple class="form-control" id="compSelect"
+                                            form="#createGameForm">
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +153,7 @@
                                     </h2>
                                 </div>
                                 <div class="col-md-2">
-                                    <button disabled class="btn btn-success"
+                                    <button disabled class="btn btn-success" id="seasonBtn"
                                     >Next</button>
                                 </div>
                             </div>
@@ -150,6 +162,12 @@
                         <div id="collapseSeason" class="collapse" aria-labelledby="headSeason" 
                         data-parent="#gameAccordion">
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <input class="form-control my-2" type="number" id="seasonInp"
+                                        maxlength="4" min="1900">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -166,7 +184,7 @@
                                     </h2>
                                 </div>
                                 <div class="col-md-2">
-                                    <button disabled class="btn btn-success"
+                                    <button disabled class="btn btn-success" id="scoreBtn"
                                     >Next</button>
                                 </div>
                             </div>
@@ -175,6 +193,32 @@
                         <div id="collapseScore" class="collapse" aria-labelledby="headScore" 
                         data-parent="#gameAccordion">
                             <div class="card-body">
+                                <div class="row mx-5">
+                                    <div class="col">
+                                        <h6 style="vertical-align: middle">Home</h6>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select class="custom-select mr-sm-2" id="homeInp">
+                                            <option selected value="true">True</option>
+                                            <option value="false">False</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-md-1"></div>
+                                    <div class="col">Home Team</div>
+                                    <div class="col-md-1 text-center px-3">
+                                        <input type="number" value="0" max="20" min="0" class="form-control"
+                                        id="scoreValH">
+                                    </div>
+                                    <div class="col-md-1">v</div>
+                                    <div class="col-md-1">
+                                        <input type="number" value="0" max="20" min="0" class="form-control"
+                                        id="scoreValA">
+                                    </div>
+                                    <div class="col">Away Team</div>
+                                    <div class="col-md-1"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -191,7 +235,7 @@
                                     </h2>
                                 </div>
                                 <div class="col-md-2">
-                                    <button disabled class="btn btn-success"
+                                    <button disabled class="btn btn-success" id="startBtn"
                                     >Next</button>
                                 </div>
                             </div>
@@ -200,6 +244,11 @@
                         <div id="collapseStart" class="collapse" aria-labelledby="headStart" 
                         data-parent="#gameAccordion">
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -216,7 +265,7 @@
                                     </h2>
                                 </div>
                                 <div class="col-md-2">
-                                    <button disabled class="btn btn-success"
+                                    <button disabled class="btn btn-success" id="benchBtn"
                                     >Next</button>
                                 </div>
                             </div>        
@@ -225,6 +274,11 @@
                         <div id="collapseBench" class="collapse" aria-labelledby="headBench" 
                         data-parent="#gameAccordion">
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

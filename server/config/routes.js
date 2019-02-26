@@ -51,6 +51,16 @@ module.exports = function(app) {
         competitions.getMultiple(req, res);
     });
 
+    // Get all competitions with given query
+    app.put('/db/v2/competitions/query', function(req, res) {
+        competitions.getAllWithName(req, res);
+    });
+
+    // Get all competitions
+    app.get('/db/v2/competitions', function(req, res) {
+        competitions.getAll(req, res);
+    });
+
     // Get all the competitions for specific team by ID
     app.get('/db/v2/teams/:id/competitions', function(req, res) {
         competitions.getAllCompetitionsForTeam(req, res);
@@ -152,7 +162,7 @@ module.exports = function(app) {
     });
 
     // Get all the games in the database for specific team by ID
-    app.get('/db/v2/games/:team', function(req, res) {
+    app.get('/db/v2/games/team/:team', function(req, res) {
         games.getAllGamesForTeam(req, res);
     });
 

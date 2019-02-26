@@ -11,7 +11,7 @@ $(document).ready(function() {
                     // html += ("<option value='"+ team['_id'] +"'>" +
                     // team['name'] +"</option>");
                 };
-                document.getElementById("teamSelect").innerHTML = html;
+                document.getElementById('teamSelect').innerHTML = html;
             };
         }
     });
@@ -23,12 +23,15 @@ $(document).ready(function() {
         switch (select_id) {
             case "teamSelect":
                 newGame['team'] = select_val;
+                $('#teamBtn').prop('disabled', false);
                 break;
             case "oppoSelect":
                 newGame['opposition'] = select_val;
+                $('#oppoBtn').prop('disabled', false);
                 break;
             case "compSelect":
                 newGame['competition'] = select_val;
+                $('#compBtn').prop('disabled', false);
                 break;
             default:
                 break;
@@ -82,4 +85,40 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('#compInp').on('keyup', function(event) {
+        event.preventDefault();
+        let query = this['value'];
+        let data = {
+            name: query
+        }
+
+        $.ajax({
+            type: 'PUT',
+            url: '/db/v2/competitions/query',
+            data: data,
+            success: function(response) {
+                let html = ""
+                if (response['message'] == "Success") {
+                    for (let competition of response['competitions']) {
+                        html += ("<option value='"+ competition['_id'] +"'>" +
+                        competition['name'] +"</option>");
+                    };
+                };
+                document.getElementById("compSelect").innerHTML = html;
+            }
+        });
+    });
+
+    function disableAllButtons() {
+        $('#teamBtn').prop('disabled', true);
+        $('#oppoBtn').prop('disabled', true);
+        $('#compBtn').prop('disabled', true);
+        $('#seasonBtn').prop('disabled', true);
+        $('#scoreBtn').prop('disabled', true);
+        $('#startBtn').prop('disabled', true);
+        $('#benchBtn').prop('disabled', true);
+    }
+
+    disableAllButtons();
 })

@@ -51,6 +51,29 @@ module.exports = {
         });
     },
 
+    getAll: function(req, res) {
+        Competition.find({}, function(error, competitions) {
+            if (error) {
+                console.log("There was an issue: ", error['message']);
+                res.json(error);
+            } else {
+                let response = {};
+                if (competitions.length) {
+                    response = {
+                        message: "Success",
+                        competitions: competitions
+                    };
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No competitions found"
+                    };
+                };
+                res.json(response);
+            };
+        });
+    },
+
     getAllWithName: function(req, res) {
         let query = req.body['name'];
         let reg = new RegExp(query, 'i');
