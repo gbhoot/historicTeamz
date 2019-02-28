@@ -246,7 +246,35 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-
+                                        <input class="form-control my-2" type="text" id="startInp">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button disabled class="btn btn-success" id="addStartBtn"
+                                        >Add</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <select multiple class="form-control" id="startSelect"
+                                            form="#createGameForm">
+                                            </select>
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <table class="table table-striped">
+                                            <thead class="thead-dark text-center">
+                                                <tr>
+                                                    <th scope="col">Position</th>
+                                                    <th scope="col">First Name</th>
+                                                    <th scope="col">Last Name</th>
+                                                    <th scope="col">Number</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center" id="tableStarters"></tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -276,7 +304,26 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-
+                                        <input class="form-control my-2" type="text" id="benchInp">
+                                        <div class="form-group">
+                                            <select multiple class="form-control" id="benchSelect"
+                                            form="#createGameForm">
+                                            </select>
+                                        </div>        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <table class="table table-striped">
+                                            <thead class="thead-dark text-center">
+                                                <tr>
+                                                    <th scope="col">First Name</th>
+                                                    <th scope="col">Last Name</th>
+                                                    <th scope="col">Number</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center" id="tableBench"></tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

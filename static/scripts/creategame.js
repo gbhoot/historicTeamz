@@ -33,6 +33,9 @@ $(document).ready(function() {
                 newGame['competition'] = select_val;
                 $('#compBtn').prop('disabled', false);
                 break;
+            case "startSelect":
+                $('#addStartBtn').prop('disabled', false);
+                break;
             default:
                 break;
         }
@@ -109,6 +112,11 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('#addStartBtn').on('click', function(event) {
+        event.preventDefault();
+        
+    })
 
     function disableAllButtons() {
         $('#teamBtn').prop('disabled', true);
