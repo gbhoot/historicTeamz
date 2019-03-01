@@ -36,9 +36,14 @@ module.exports = function(app) {
         countries.getOne(req, res);
     });
 
+    // Get multiple countries
+    app.put('/db/v2/countries/multiple', function(req, res) {
+        countries.getMultiple(req, res);
+    });
+
     // Create country
     app.post('/db/v2/countries', function(req, res) {
-        countries.create(req,);
+        countries.create(req, res);
     });
 
     // Get one competition by ID
@@ -138,7 +143,7 @@ module.exports = function(app) {
 
     // Create player
     app.post('/db/v2/players', function(req, res) {
-        teams.create(req, res);
+        players.create(req, res);
     });
 
     // Edit player by ID

@@ -113,6 +113,74 @@ $(document).ready(function() {
         });
     });
 
+    $('#startInp').on('keyup', function(event) {
+        event.preventDefault();
+        let query = this['value'];
+        let data = {
+            name: query
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/db/v2/players/query',
+            data: data,
+            success: function(response) {
+                let html = ""
+                if (response['message'] = "Success") {
+                    for (let player of response['players']) {
+                        html += ("<option value ='"+ player['_id'] +"'>"+ 
+                        player['firstName'] +" "+ player['lastName'] +"</option>");
+                    };
+                };
+                document.getElementById("startSelect").innerHTML = html;
+            }
+        });
+    });
+
+    $('#benchInp').on('keyup', function(event) {
+        event.preventDefault();
+        let query = this['value'];
+        let data = {
+            name: query
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/db/v2/players/query',
+            data: data,
+            success: function(response) {
+                if (response['message'] == "Success") {
+                    let countries = [];
+                    for (let player of response['players']) {
+                        countries.push(player['country']);
+                    }
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/db/v2/countries/multiple',
+                        data: {countries: countries},
+                        success: function(countryData) {
+                            if (countryData['message'] == "Success") {
+                                let html = "";
+                                for (let count in response['players']) {
+                                    let player = response['players'][count];
+                                    let country = countryData['countries'][count];
+                                    console.log(count, response['players'], country);
+                                    html += ("<option value='"+ player['_id'] +"'>"+
+                                    "<div class='row'><div class='col'>"+
+                                    player['firstName'] +" "+ player['lastName'] +
+                                    "</div><div class='col-md-2'>"+ country['name'] +
+                                    "</div></div></option>");
+                                    // "</option>");
+                                }
+                                document.getElementById('benchSelect').innerHTML = html;
+                            }
+                        }
+                    })
+                }
+            }
+        });
+    });
+
     $('#addStartBtn').on('click', function(event) {
         event.preventDefault();
         

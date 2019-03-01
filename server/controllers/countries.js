@@ -99,6 +99,30 @@ module.exports = {
         });
     },
 
+    getMultiple: function(req, res) {
+        let cids = req.body['countries'];
+        Country.find({_id: cids}, function(error, countries) {
+            if (error) {
+                console.log("There was an issue: ", error['message']);
+                res.json(error);
+            } else {
+                let response = {};
+                if (countries.length) {
+                    response = {
+                        message: "Success",
+                        countries: countries
+                    };
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No countries found"
+                    };
+                };
+                res.json(response);
+            };
+        });
+    },
+
     create: function(req, res) {
         let inc_country = req.body;
         let country = new Country(inc_country);

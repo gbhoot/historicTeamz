@@ -53,18 +53,32 @@ module.exports = {
                 res.json(error);
             } else {
                 let response = {};
-                if (players) {
-                    response = {
-                        message: "Success",
-                        players: players
-                    };
+                if (players.length) {
+                    let pids = [];
+                    for (let player of players) {
+                        pids.push(player['_id']);
+                    }
+                    Player.find({_id: pids}, function(error, players) {
+                        if (error) {
+                            console.log("There was an issue: ", error['message']);
+                            res.json(error);
+                        } else {
+                            if (players.length) {
+                                response = {
+                                    message: "Success",
+                                    players: players
+                                };
+                            };
+                            res.json(response);
+                        };
+                    });
                 } else {
                     response = {
                         message: "Failure",
                         content: "No players found"
                     };
+                    res.json(response);
                 };
-                res.json(response);
             };
         });
     },
