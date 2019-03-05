@@ -1,5 +1,14 @@
 $(document).ready(function() {
     let newGame = {};
+    let positions = [
+        'GK', 'RB', 'RCB', 'CB', 'LCB', 'LB',
+        'RWB', 'RCDM', 'CDM', 'LCDM', 'LWB',
+        'RM', 'RCM', 'CM', 'LCM', 'LM',
+        'RW', 'RAM', 'CAM', 'LAM', 'LW',
+        'STR', 'CF', 'STL'
+    ]
+    let starters = [];
+    let curPos = "", curPlayer = "", curNum = 0;
 
     $.ajax({
         type: 'GET',
@@ -35,6 +44,10 @@ $(document).ready(function() {
                 break;
             case "startSelect":
                 $('#addStartBtn').prop('disabled', false);
+                curPlayer = select_val;
+                break;
+            case "posSelect":
+                curPos = select_val;
                 break;
             default:
                 break;
@@ -116,6 +129,7 @@ $(document).ready(function() {
     $('#startInp').on('keyup', function(event) {
         event.preventDefault();
         let query = this['value'];
+
         let data = {
             name: query
         };
@@ -181,10 +195,31 @@ $(document).ready(function() {
         });
     });
 
+    $('#playerNumba').on('click', function(event) {
+        event.preventDefault();
+        let query = this['value'];
+        curNum = query;
+    });
+
     $('#addStartBtn').on('click', function(event) {
         event.preventDefault();
-        
-    })
+        $.ajax({
+            type: 'GET',
+            url: '/db/v2/players/'+ curPlayer,
+            success: function(response) {
+                if (response['message'] == "Success") {
+                    let fName = response['firstName'];
+                    let lName = response['lastName'];
+                    starters[curPos] = {
+                        'fName': fName,
+                        'lName': lName,
+                        'num': curNum
+                    };
+                    // positions.
+                };
+            }
+        });
+    });
 
     function disableAllButtons() {
         $('#teamBtn').prop('disabled', true);
@@ -196,5 +231,24 @@ $(document).ready(function() {
         $('#benchBtn').prop('disabled', true);
     }
 
+    function updateAvailablePositions() {
+        let html = ""
+        for (let pos of positions) {
+            html += ("<option value='"+ pos +"'>"+ 
+            pos +"</option>");
+        }
+        console.log(html);
+        document.getElementById('posSelect').innerHTML = html;
+    };
+
+    function updateStartersTable() {
+        let html = "";
+        for (let player of starters) {
+            console.log(player);
+        }
+    }
+
     disableAllButtons();
+    updateAvailablePositions();
+    updateStartersTable();
 })
