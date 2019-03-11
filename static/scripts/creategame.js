@@ -7,7 +7,7 @@ $(document).ready(function() {
         'RW', 'RAM', 'CAM', 'LAM', 'LW',
         'STR', 'CF', 'STL'
     ]
-    let starters = [];
+    let starters = {}, bench = {};
     let curPos = "", curPlayer = "", curNum = 0;
 
     $.ajax({
@@ -32,22 +32,27 @@ $(document).ready(function() {
         switch (select_id) {
             case "teamSelect":
                 newGame['team'] = select_val;
+                console.log(newGame);
                 $('#teamBtn').prop('disabled', false);
                 break;
             case "oppoSelect":
                 newGame['opposition'] = select_val;
+                console.log(newGame);
                 $('#oppoBtn').prop('disabled', false);
                 break;
             case "compSelect":
                 newGame['competition'] = select_val;
+                console.log(newGame);
                 $('#compBtn').prop('disabled', false);
                 break;
             case "startSelect":
                 $('#addStartBtn').prop('disabled', false);
                 curPlayer = select_val;
+                console.log(curPlayer);
                 break;
             case "posSelect":
                 curPos = select_val;
+                console.log(curPos);
                 break;
             default:
                 break;
@@ -142,11 +147,21 @@ $(document).ready(function() {
                 let html = ""
                 if (response['message'] = "Success") {
                     for (let player of response['players']) {
-                        html += ("<option value ='"+ player['_id'] +"'>"+ 
-                        player['firstName'] +" "+ player['lastName'] +"</option>");
+                        let country = player['country'];
+                        $.ajax({
+                            type: 'GET',
+                            url: '/db/v2/countries/'+ country,
+                            success: function(countryData) {
+                                if (countryData['message'] == "Success") {
+                                    html += ("<option value ='"+ player['_id'] +"'>"+ 
+                                    player['firstName'] +" "+ player['lastName'] +
+                                    " ("+ countryData['country']['nationality'] +")</option>");
+                                }
+                                document.getElementById("startSelect").innerHTML = html;
+                            }
+                        })
                     };
                 };
-                document.getElementById("startSelect").innerHTML = html;
             }
         });
     });
@@ -199,6 +214,7 @@ $(document).ready(function() {
         event.preventDefault();
         let query = this['value'];
         curNum = query;
+        console.log(curNum);
     });
 
     $('#addStartBtn').on('click', function(event) {
@@ -215,7 +231,7 @@ $(document).ready(function() {
                         'lName': lName,
                         'num': curNum
                     };
-                    // positions.
+                    updateStartersTable();
                 };
             }
         });
@@ -242,13 +258,14 @@ $(document).ready(function() {
     };
 
     function updateStartersTable() {
+        updateAvailablePositions();
         let html = "";
-        for (let player of starters) {
-            console.log(player);
+        for (let key in starters) {
+            console.log(key);
+            html = ("<tr><td>")
         }
     }
 
     disableAllButtons();
-    updateAvailablePositions();
     updateStartersTable();
 })

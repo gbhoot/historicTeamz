@@ -66,7 +66,16 @@ module.exports = {
                             if (players.length) {
                                 response = {
                                     message: "Success",
-                                    players: players
+                                    players: players.sort(function(a,b) {
+                                        var nameA = a['firstName'].toUpperCase();
+                                        var nameB = b['firstName'].toUpperCase();
+                                        if (nameA < nameB) {
+                                            return -1;
+                                        } else if (nameA > nameB) {
+                                            return 1;
+                                        }
+                                        return 0;
+                                    })
                                 };
                             };
                             res.json(response);
