@@ -49,6 +49,7 @@ $(document).ready(function() {
                 $('#addStartBtn').prop('disabled', false);
                 curPlayer = select_val;
                 console.log(curPlayer);
+                document.getElementById('startInp').value = '';
                 break;
             case "posSelect":
                 curPos = select_val;
@@ -145,7 +146,8 @@ $(document).ready(function() {
             data: data,
             success: function(response) {
                 let html = ""
-                if (response['message'] = "Success") {
+                if (response['message'] = "Success" && !response['content']) {
+                    console.log(response);
                     for (let player of response['players']) {
                         let country = player['country'];
                         $.ajax({
@@ -161,7 +163,10 @@ $(document).ready(function() {
                             }
                         })
                     };
-                };
+                } else {
+                    console.log(response);
+                    document.getElementById('startSelect').innerHTML = "";
+                }
             }
         });
     });
@@ -210,7 +215,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#playerNumba').on('click', function(event) {
+    $('#playerNumba').on('keyup', function(event) {
         event.preventDefault();
         let query = this['value'];
         curNum = query;
@@ -224,13 +229,13 @@ $(document).ready(function() {
             url: '/db/v2/players/'+ curPlayer,
             success: function(response) {
                 if (response['message'] == "Success") {
-                    let fName = response['firstName'];
-                    let lName = response['lastName'];
                     starters[curPos] = {
-                        'fName': fName,
-                        'lName': lName,
+                        '_id': curPlayer,
+                        'fName': response['player']['firstName'],
+                        'lName': response['player']['lastName'],
                         'num': curNum
                     };
+                    // positions = listRemove(positions, curPos);
                     updateStartersTable();
                 };
             }
@@ -248,12 +253,11 @@ $(document).ready(function() {
     }
 
     function updateAvailablePositions() {
-        let html = ""
+        let html = "<option value='**'></option>"
         for (let pos of positions) {
             html += ("<option value='"+ pos +"'>"+ 
             pos +"</option>");
         }
-        console.log(html);
         document.getElementById('posSelect').innerHTML = html;
     };
 
@@ -261,10 +265,20 @@ $(document).ready(function() {
         updateAvailablePositions();
         let html = "";
         for (let key in starters) {
-            console.log(key);
-            html = ("<tr><td>")
+            html += "<tr><th scope='row'>"+ key +"</th>";
+            html += "<td>"+ starters[key]['fName'] +"</td>";
+            html += "<td>"+ starters[key]['lName'] +"</td>";
+            html += "<td>"+ starters[key]['num'] +"</td></tr>";
         }
+        document.getElementById('tableStarters').innerHTML = html;
+        console.log(starters);
     }
+
+    function listRemove(list, value) {
+        return list.filter(function(lookup) {
+            return lookup != value;
+        });
+    };
 
     disableAllButtons();
     updateStartersTable();

@@ -9,9 +9,9 @@ module.exports = {
                 res.json(error);
             } else {
                 let response = {};
-                if (players && players.length == 1) {
+                if (players.length == 1) {
                     response = {
-                        message: "Succes",
+                        message: "Success",
                         player: players[0]
                     };
                 } else {
@@ -52,7 +52,6 @@ module.exports = {
                 console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
-                let response = {};
                 if (players.length) {
                     let pids = [];
                     for (let player of players) {
@@ -63,26 +62,24 @@ module.exports = {
                             console.log("There was an issue: ", error['message']);
                             res.json(error);
                         } else {
-                            if (players.length) {
-                                response = {
-                                    message: "Success",
-                                    players: players.sort(function(a,b) {
-                                        var nameA = a['firstName'].toUpperCase();
-                                        var nameB = b['firstName'].toUpperCase();
-                                        if (nameA < nameB) {
-                                            return -1;
-                                        } else if (nameA > nameB) {
-                                            return 1;
-                                        }
-                                        return 0;
-                                    })
-                                };
+                            let response = {
+                                message: "Success",
+                                players: players.sort(function(a,b) {
+                                    var nameA = a['firstName'].toUpperCase();
+                                    var nameB = b['firstName'].toUpperCase();
+                                    if (nameA < nameB) {
+                                        return -1;
+                                    } else if (nameA > nameB) {
+                                        return 1;
+                                    }
+                                    return 0;
+                                })
                             };
                             res.json(response);
                         };
                     });
                 } else {
-                    response = {
+                    let response = {
                         message: "Failure",
                         content: "No players found"
                     };
