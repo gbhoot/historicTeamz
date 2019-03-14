@@ -161,6 +161,11 @@ module.exports = function(app) {
         players.delete(req, res);
     });
 
+    // Get all games
+    app.get('/db/v2/games', function(req, res) {
+        games.getAll(req, res);
+    });
+
     // Get one game by ID
     app.get('/db/v2/games/:id', function(req, res) {
         games.getOne(req, res);
@@ -174,6 +179,11 @@ module.exports = function(app) {
     // Get all the games in the database for specific team by ID and then for competition by ID
     app.get('/db/v2/games/:team/:comp', function(req, res) {
         games.getAllGamesForTeamAndCompetition(req, res);
+    });
+
+    // Create game
+    app.post('/db/v2/games', function(req, res) {
+        games.create(req, res);
     });
 
     // Version One

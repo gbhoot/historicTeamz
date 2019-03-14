@@ -33,23 +33,36 @@ $(document).ready(function() {
             case "teamSelect":
                 newGame['team'] = select_val;
                 console.log(newGame);
+                document.getElementById('teamInp').value = '';
                 $('#teamBtn').prop('disabled', false);
                 break;
             case "oppoSelect":
                 newGame['opposition'] = select_val;
                 console.log(newGame);
+                document.getElementById('oppoInp').value = '';
                 $('#oppoBtn').prop('disabled', false);
                 break;
             case "compSelect":
                 newGame['competition'] = select_val;
                 console.log(newGame);
+                document.getElementById('compInp').value = '';
                 $('#compBtn').prop('disabled', false);
+                break;
+            case "homeSelect":
+                newGame['home'] = select_val;
+                console.log(newGame);
                 break;
             case "startSelect":
                 $('#addStartBtn').prop('disabled', false);
                 curPlayer = select_val;
                 console.log(curPlayer);
                 document.getElementById('startInp').value = '';
+                break;
+            case "benchSelect":
+                $('#addBenchBtn').prop('disabled', false);
+                curPlayer = select_val;
+                console.log(curPlayer);
+                document.getElementById('benchInp').value = '';
                 break;
             case "posSelect":
                 curPos = select_val;
@@ -132,6 +145,29 @@ $(document).ready(function() {
         });
     });
 
+    $('#seasonInp').on('keyup', function(event) {
+        event.preventDefault();
+        let query = Number(this['value']);
+        newGame['season'] = query;
+        console.log(newGame);
+    })
+
+    $('#scoreValH').on('keyup', function(event) {
+        event.preventDefault();
+        let query = Number(this['value']);
+        checkNewGameScore();
+        newGame['score'][0] = query;
+        console.log(newGame);
+    });
+
+    $('#scoreValA').on('keyup', function(event) {
+        event.preventDefault();
+        let query = Number(this['value']);
+        checkNewGameScore();
+        newGame['score'][1] = query;
+        console.log(newGame);
+    });
+
     $('#startInp').on('keyup', function(event) {
         event.preventDefault();
         let query = this['value'];
@@ -147,7 +183,6 @@ $(document).ready(function() {
             success: function(response) {
                 let html = ""
                 if (response['message'] = "Success" && !response['content']) {
-                    console.log(response);
                     for (let player of response['players']) {
                         let country = player['country'];
                         $.ajax({
@@ -174,6 +209,7 @@ $(document).ready(function() {
     $('#benchInp').on('keyup', function(event) {
         event.preventDefault();
         let query = this['value'];
+
         let data = {
             name: query
         };
@@ -183,33 +219,26 @@ $(document).ready(function() {
             url: '/db/v2/players/query',
             data: data,
             success: function(response) {
-                if (response['message'] == "Success") {
-                    let countries = [];
+                let html = ""
+                if (response['message'] = "Success" && !response['content']) {
                     for (let player of response['players']) {
-                        countries.push(player['country']);
-                    }
-                    $.ajax({
-                        type: 'PUT',
-                        url: '/db/v2/countries/multiple',
-                        data: {countries: countries},
-                        success: function(countryData) {
-                            if (countryData['message'] == "Success") {
-                                let html = "";
-                                for (let count in response['players']) {
-                                    let player = response['players'][count];
-                                    let country = countryData['countries'][count];
-                                    console.log(count, response['players'], country);
-                                    html += ("<option value='"+ player['_id'] +"'>"+
-                                    "<div class='row'><div class='col'>"+
+                        let country = player['country'];
+                        $.ajax({
+                            type: 'GET',
+                            url: '/db/v2/countries/'+ country,
+                            success: function(countryData) {
+                                if (countryData['message'] == "Success") {
+                                    html += ("<option value ='"+ player['_id'] +"'>"+ 
                                     player['firstName'] +" "+ player['lastName'] +
-                                    "</div><div class='col-md-2'>"+ country['name'] +
-                                    "</div></div></option>");
-                                    // "</option>");
+                                    " ("+ countryData['country']['nationality'] +")</option>");
                                 }
-                                document.getElementById('benchSelect').innerHTML = html;
+                                document.getElementById("benchSelect").innerHTML = html;
                             }
-                        }
-                    })
+                        })
+                    };
+                } else {
+                    console.log(response);
+                    document.getElementById('benchSelect').innerHTML = "";
                 }
             }
         });
@@ -224,6 +253,7 @@ $(document).ready(function() {
 
     $('#addStartBtn').on('click', function(event) {
         event.preventDefault();
+        document.getElementById('startSelect').innerHTML = "";
         $.ajax({
             type: 'GET',
             url: '/db/v2/players/'+ curPlayer,
@@ -231,16 +261,49 @@ $(document).ready(function() {
                 if (response['message'] == "Success") {
                     starters[curPos] = {
                         '_id': curPlayer,
-                        'fName': response['player']['firstName'],
-                        'lName': response['player']['lastName'],
                         'num': curNum
                     };
-                    // positions = listRemove(positions, curPos);
                     updateStartersTable();
                 };
             }
         });
     });
+
+    $('#addBenchBtn').on('click', function(event) {
+        event.preventDefault();
+        document.getElementById('startSelect').innerHTML = "";
+        $.ajax({
+            type: 'GET',
+            url: '/db/v2/players/'+ curPlayer,
+            success: function(response) {
+                if (response['message'] == "Success") {
+                    bench[curPos] = {
+                        '_id': curPlayer,
+                        'num': curNum
+                    };
+                };
+            }
+        });
+    });
+
+    $('#createBtn').on('click', function(event) {
+        event.preventDefault();
+        console.log(newGame);
+        $.ajax({
+            type: 'POST',
+            url: '/db/v2/games',
+            data: newGame,
+            success: function(response) {
+                console.log(response);
+            }
+        });
+    });
+
+    function checkNewGameScore() {
+        if (!newGame['score']) {
+            newGame['score'] = [];
+        };
+    };
 
     function disableAllButtons() {
         $('#teamBtn').prop('disabled', true);
@@ -250,29 +313,60 @@ $(document).ready(function() {
         $('#scoreBtn').prop('disabled', true);
         $('#startBtn').prop('disabled', true);
         $('#benchBtn').prop('disabled', true);
-    }
+    };
 
     function updateAvailablePositions() {
         let html = "<option value='**'></option>"
         for (let pos of positions) {
             html += ("<option value='"+ pos +"'>"+ 
             pos +"</option>");
-        }
+        };
         document.getElementById('posSelect').innerHTML = html;
     };
 
     function updateStartersTable() {
         updateAvailablePositions();
+        newGame['starters'] = starters
         let html = "";
         for (let key in starters) {
-            html += "<tr><th scope='row'>"+ key +"</th>";
-            html += "<td>"+ starters[key]['fName'] +"</td>";
-            html += "<td>"+ starters[key]['lName'] +"</td>";
-            html += "<td>"+ starters[key]['num'] +"</td></tr>";
-        }
-        document.getElementById('tableStarters').innerHTML = html;
-        console.log(starters);
-    }
+            $.ajax({
+                type: 'GET',
+                url: '/db/v2/players/'+ starters[key]['_id'],
+                success: function(response) {
+                    console.log(response);
+                    if (response['message'] == "Success") {
+                        html += "<tr><th scope='row'>"+ key +"</th>";
+                        html += "<td>"+ response['player']['firstName'] +"</td>";
+                        html += "<td>"+ response['player']['lastName'] +"</td>";
+                        html += "<td>"+ starters[key]['num'] +"</td></tr>";
+                    };
+                    document.getElementById('tableStarters').innerHTML = html;
+                    console.log(newGame);
+                }
+            });
+        };
+    };
+
+    function updateBenchTable() {
+        newGame['bench'] = bench
+        let html = "";
+        for (let player of bench) {
+            $.ajax({
+                type: 'GET',
+                url: '/db/v2/players/'+ player['_id'],
+                success: function(response) {
+                    console.log(response);
+                    if (response['message'] == "Success") {
+                        html += "<tr><td>"+ response['player']['firstName'] +"</td>";
+                        html += "<td>"+ response['player']['lastName'] +"</td>";
+                        html += "<td>"+ starters[key]['num'] +"</td></tr>";
+                    };
+                    document.getElementById('tableStarters').innerHTML = html;
+                    console.log(newGame);
+                }
+            });
+        };
+    };
 
     function listRemove(list, value) {
         return list.filter(function(lookup) {
