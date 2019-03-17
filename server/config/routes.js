@@ -16,7 +16,7 @@ module.exports = function(app) {
         futbalTeams.renderTeam(req, res);
     });
 
-    app.get('/games/createGame', function(req, res) {
+    app.get('/games/create', function(req, res) {
         res.render('createGame');
     });
 
@@ -87,7 +87,7 @@ module.exports = function(app) {
     });
 
     // Get all teams for country by ID
-    app.get('/db/v2/teams/:country', function(req, res) {
+    app.get('/db/v2/teams/country/:country', function(req, res) {
         teams.getAllTeamsForCountry(req, res);
     });
 
@@ -184,6 +184,11 @@ module.exports = function(app) {
     // Create game
     app.post('/db/v2/games', function(req, res) {
         games.create(req, res);
+    });
+
+    // Delete a game by ID
+    app.delete('/db/v2/games/:id', function(req, res) {
+        games.delete(req, res);
     });
 
     // Version One
