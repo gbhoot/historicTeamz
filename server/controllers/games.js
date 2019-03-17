@@ -7,9 +7,17 @@ module.exports = {
                 console.log("There was an issue: ", error['message']);
                 res.json(error);
             } else {
-                let response = {
-                    message: "Success",
-                    games: games
+                let response = {};
+                if (games.length) {
+                    response = {
+                        message: "Success",
+                        games: games
+                    };
+                } else {
+                    response = {
+                        message: "Failure",
+                        content: "No games found"
+                    };
                 };
                 res.json(response);
             };

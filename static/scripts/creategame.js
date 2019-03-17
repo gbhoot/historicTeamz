@@ -7,7 +7,7 @@ $(document).ready(function() {
         'RW', 'RAM', 'CAM', 'LAM', 'LW',
         'STR', 'CF', 'STL'
     ]
-    let starters = {}, bench = {};
+    let starters = {}, bench = [];
     let curPos = "", curPlayer = "", curNum = 0;
 
     $.ajax({
@@ -244,7 +244,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#playerNumba').on('keyup', function(event) {
+    $('.playerNumba').on('keyup', function(event) {
         event.preventDefault();
         let query = this['value'];
         curNum = query;
@@ -277,10 +277,12 @@ $(document).ready(function() {
             url: '/db/v2/players/'+ curPlayer,
             success: function(response) {
                 if (response['message'] == "Success") {
-                    bench[curPos] = {
+                    let player = {
                         '_id': curPlayer,
                         'num': curNum
                     };
+                    bench.push(player);
+                    updateBenchTable();
                 };
             }
         });
@@ -294,7 +296,11 @@ $(document).ready(function() {
             url: '/db/v2/games',
             data: newGame,
             success: function(response) {
-                console.log(response);
+                if (response['message'] == "Success") {
+                    resetAllFields();
+                } else {
+                    console.log(response);
+                }
             }
         });
     });
@@ -314,6 +320,11 @@ $(document).ready(function() {
         $('#startBtn').prop('disabled', true);
         $('#benchBtn').prop('disabled', true);
     };
+
+    function resetAllFields() {
+        $('#createGameForm').trigger('reset');
+        location.reload();
+    }
 
     function updateAvailablePositions() {
         let html = "<option value='**'></option>"
@@ -350,18 +361,18 @@ $(document).ready(function() {
     function updateBenchTable() {
         newGame['bench'] = bench
         let html = "";
-        for (let player of bench) {
+        for (let player in bench) {
             $.ajax({
                 type: 'GET',
-                url: '/db/v2/players/'+ player['_id'],
+                url: '/db/v2/players/'+ bench[player]['_id'],
                 success: function(response) {
                     console.log(response);
                     if (response['message'] == "Success") {
                         html += "<tr><td>"+ response['player']['firstName'] +"</td>";
                         html += "<td>"+ response['player']['lastName'] +"</td>";
-                        html += "<td>"+ starters[key]['num'] +"</td></tr>";
+                        html += "<td>"+ bench[player]['num'] +"</td></tr>";
                     };
-                    document.getElementById('tableStarters').innerHTML = html;
+                    document.getElementById('tableBench').innerHTML = html;
                     console.log(newGame);
                 }
             });

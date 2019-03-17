@@ -32,7 +32,7 @@
     </header>
 
     <main>
-        <form action="" id="createGameForm"></form>
+        <form action="#" id="createGameForm"></form>
         <div class="container">
             <div class="col-md-3"></div>
             <div class="col">
@@ -62,12 +62,13 @@
                             <div class="card-body text-left">
                                 <div class="row">
                                     <div class="col">
-                                        <input class="form-control my-2" type="text" id="teamInp">
+                                        <input class="form-control my-2" type="text" id="teamInp"
+                                        form="createGameForm">
                                         <div class="form-group" id="teamSel">
-                                            <select multiple class="form-control" id="teamSelect">
-                                            </select>
+                                            <select multiple class="form-control" id="teamSelect"
+                                            form="createGameForm"></select>
                                         </div>
-                                    </div>                                    
+                                    </div>            
                                 </div>
                             </div>
                         </div>
@@ -97,10 +98,11 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <input class="form-control my-2" type="text" id="oppoInp">
+                                        <input class="form-control my-2" type="text" id="oppoInp"
+                                        form="createGameForm">
                                         <div class="form-group">
-                                            <select multiple class="form-control" id="oppoSelect">
-                                            </select>
+                                            <select multiple class="form-control" id="oppoSelect"
+                                            form="createGameForm"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -132,11 +134,11 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <input class="form-control my-2" type="text" id="compInp">
+                                        <input class="form-control my-2" type="text" id="compInp"
+                                        form="createGameForm">
                                         <div class="form-group">
                                             <select multiple class="form-control" id="compSelect"
-                                            form="#createGameForm">
-                                            </select>
+                                            form="createGameForm"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +171,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <input class="form-control my-2" type="number" id="seasonInp"
-                                        maxlength="4" min="1900">
+                                        maxlength="4" min="1900" form="createGameForm">
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +205,8 @@
                                         <h6 style="vertical-align: middle">Home</h6>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="custom-select mr-sm-2" id="homeSelect">
+                                        <select class="custom-select mr-sm-2" id="homeSelect"
+                                        form="createGameForm">
                                             <option value="**"></option>
                                             <option value="true">True</option>
                                             <option value="false">False</option>
@@ -215,12 +218,12 @@
                                     <div class="col">Home Team</div>
                                     <div class="col-md-1 text-center px-3">
                                         <input type="number" value="0" max="20" min="0" class="form-control"
-                                        id="scoreValH">
+                                        id="scoreValH" form="createGameForm">
                                     </div>
                                     <div class="col-md-1">v</div>
                                     <div class="col-md-1">
                                         <input type="number" value="0" max="20" min="0" class="form-control"
-                                        id="scoreValA">
+                                        id="scoreValA" form="createGameForm">
                                     </div>
                                     <div class="col">Away Team</div>
                                     <div class="col-md-1"></div>
@@ -251,19 +254,17 @@
                         data-parent="#gameAccordion">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col">
-                                        <input class="form-control my-2" type="text" id="startInp">
+                                    <div class="col text-center">
+                                        <input class="form-control my-2" type="text" id="startInp"
+                                        form="createGameForm">
                                     </div>
                                     <div class="col-md-2 text-center">
-                                        <div class="form-group">
-                                            <input type="number" value="0" max="100" min="0" class="form-control"
-                                            id="playerNumba">
-                                        </div>
+                                        <input type="number" value="0" max="100" min="0" 
+                                        class="form-control playerNumba" form="createGameForm">
                                     </div>
                                     <div class="col-md-2 text-center">
-                                        <div class="form-group">
-                                            <select class="form-control" id="posSelect"></select>
-                                        </div>
+                                        <select class="form-control" id="posSelect"
+                                        form="createGameForm"></select>
                                     </div>
                                     <div class="col-md-2">
                                         <button disabled class="btn btn-success" id="addStartBtn"
@@ -274,7 +275,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <select multiple class="form-control" id="startSelect"
-                                            form="#createGameForm"></select>
+                                            form="createGameForm"></select>
                                         </div>    
                                     </div>
                                 </div>
@@ -319,13 +320,25 @@
                         data-parent="#gameAccordion">
                             <div class="card-body">
                                 <div class="row">
+                                    <div class="col text-center">
+                                        <input class="form-control my-2" type="text" id="benchInp"
+                                        form="createGameForm">
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <input type="number" value="0" max="100" min="0" 
+                                        class="form-control playerNumba" form="createGameForm">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button disabled class="btn btn-success" id="addBenchBtn"
+                                        >Add</button>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col">
-                                        <input class="form-control my-2" type="text" id="benchInp">
                                         <div class="form-group">
                                             <select multiple class="form-control" id="benchSelect"
-                                            form="#createGameForm">
-                                            </select>
-                                        </div>        
+                                            form="createGameForm"></select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
